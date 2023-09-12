@@ -86,11 +86,12 @@ pub fn main() anyerror!void {
 
     var args = std.process.args();
 
-    _ = args.next(allocator); // skip application name
+    // _ = args.next(allocator); // skip application name
+    _ = args.next(); // skip application name
     // Note memory will be freed on exit since using arena
 
-    const file_name = try args.next(allocator) orelse return error.MandatoryFilenameArgumentNotGiven;
-    const file = try std.fs.cwd().openFile(file_name, .{ .read = true, .write = false });
+    const file_name = args.next() orelse return error.MandatoryFilenameArgumentNotGiven;
+    const file = try std.fs.cwd().openFile(file_name, .{}); 
 
     const stream = &file.reader();
 
